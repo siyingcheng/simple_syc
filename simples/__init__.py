@@ -106,4 +106,3 @@ def create_app(config_name):
     register_template_context(app)
     register_request_handles(app)
     return app
-
