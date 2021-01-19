@@ -7,6 +7,8 @@
 # @Project  :   simples
 import enum
 
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from simples.extensions import db
 
 
@@ -25,6 +27,12 @@ class Users(db.Model):
     about = db.Column(db.String(128), nullable=True)  # 个人说明
     avatar = db.Column(db.String(256), nullable=True)  # 个人头像地址
     role = db.Column(db.Enum(RoleEnum), default=RoleEnum.commenter)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def validate_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def __str__(self):
         return self.username
