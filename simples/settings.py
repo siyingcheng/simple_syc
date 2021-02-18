@@ -8,6 +8,7 @@
 
 import os
 import sys
+from pathlib import Path
 
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -17,6 +18,14 @@ if WIN:
 else:
     prefix = 'sqlite:////'
 
+BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__))).parent
+
+STATIC_FOLDER = str(BASE_DIR.joinpath('static'))
+
+TEMPLATE_FOLDER = str(BASE_DIR.joinpath('templates'))
+
+INVITE_CODE = os.getenv('INVITE_CODE', 'invite code dev')
+
 
 class BaseConfig(object):
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev key')
@@ -24,6 +33,7 @@ class BaseConfig(object):
 
 
 class DevelopmentConfig(BaseConfig):
+    DEBUG = True
     SQLALCHEMY_DATABASE_URI = prefix + os.path.join(basedir, 'data-dev.db')
 
 
@@ -42,3 +52,6 @@ config = {
     'testing': TestingConfig,
     'production': ProductionConfig
 }
+
+if __name__ == '__main__':
+    print(BASE_DIR)

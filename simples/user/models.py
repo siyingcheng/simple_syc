@@ -22,11 +22,11 @@ class Users(db.Model):
     __talbename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32))
-    nickname = db.Column(db.String(32), nullable=True)  # 昵称
+    nickname = db.Column(db.String(32), default=username)  # 昵称
     password_hash = db.Column(db.String(256))
+    email = db.Column(db.String(128))
     about = db.Column(db.String(128), nullable=True)  # 个人说明
     avatar = db.Column(db.String(256), nullable=True)  # 个人头像地址
-    role = db.Column(db.Enum(RoleEnum), default=RoleEnum.commenter)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

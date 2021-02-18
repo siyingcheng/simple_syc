@@ -40,17 +40,3 @@ class Post(db.Model):
     body = db.Column(db.Text)
     ctime = db.Column(db.DateTime, default=datetime.now(tz=timezone(timedelta(hours=8), name='Aisa/Shanghai')))
     mtime = db.Column(db.DateTime, default=ctime)
-    comments = db.relationship('Comment', lazy='select', backref=db.backref('posts', lazy='joined'),
-                               cascade='all, delete-orphan')
-
-
-class Comment(db.Model):
-    __tablename__ = 'comments'
-    id = db.Column(db.Integer, primary_key=True)
-    author = db.relationship('User', lazy='select', backref=db.backref('comments', lazy='joined'))
-    body = db.Column(db.Text)
-    ctime = db.Column(db.DateTime, default=datetime.now(tz=timezone(timedelta(hours=8), name='Aisa/Shanghai')))
-    mtime = db.Column(db.DateTime, default=ctime)
-    replied_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
-    replied = db.relationship('Comment', back_populates='replies', remote_side=[id])
-    replies = db.relationship('Comment', back_populates='replied', cascade='all, delete-orphan')

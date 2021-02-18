@@ -11,7 +11,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from simples.extensions import db
-from simples.settings import config
+from simples.settings import config, STATIC_FOLDER, TEMPLATE_FOLDER
+from simples.user.blueprint import user_bp
 
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -40,7 +41,7 @@ def register_blueprints(app):
     :param app:
     :return:
     """
-    pass
+    app.register_blueprint(user_bp)
 
 
 def register_commands(app):
@@ -105,4 +106,11 @@ def create_app(config_name):
     register_shell_context(app)
     register_template_context(app)
     register_request_handles(app)
+    app.static_folder = STATIC_FOLDER
+    app.template_folder = TEMPLATE_FOLDER
+    print('--------------')
+    print(app.url_map)
+    print(app.static_folder)
+    print(app.template_folder)
+    print('--------------')
     return app
