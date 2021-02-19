@@ -11,27 +11,28 @@
             {{ form.csrf_token }}
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" name="username" id="username" aria-label="Username"
-                       placeholder="Username" onchange="changeUsername()">
+                       placeholder="Username" onchange="onChangeUsername()" required>
                 <label for="username">用户名</label>
             </div>
             <div class="form-floating mb-3">
                 <input type="email" class="form-control" name="email" id="useremail" placeholder="name@example.com"
-                       aria-label="Email address">
+                       aria-label="Email address" required>
                 <label for="useremail">电子邮箱</label>
             </div>
             <div class="form-floating mb-3">
                 <input type="password" class="form-control" name="password" id="password" aria-label="Password"
-                       placeholder="Password">
+                       placeholder="Password" onchange="onChangePassword()" required>
                 <label for="password">密码</label>
             </div>
             <div class="form-floating mb-3">
                 <input type="password" class="form-control" name="repassword" id="repassword"
-                       aria-label="Confirmed password" placeholder="Confirm Password">
+                       aria-label="Confirmed password" placeholder="Confirm Password" onchange="onChangeRepassowrd()"
+                       required>
                 <label for="repassword">确认密码</label>
             </div>
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" name="code" id="code" aria-label="Invite code"
-                       placeholder="Invite code">
+                       placeholder="Invite code" required>
                 <label for="code">邀请码</label>
             </div>
             <button type="submit" class="btn btn-primary">创建用户</button>
@@ -45,15 +46,44 @@
 
 {% block scripts %}
     <script>
-        function changeUsername() {
+        function onChangeUsername() {
             let userinput = document.getElementById('username');
             let msgalert = document.getElementById('msgalert');
-            let pattern = /^[a-zA-Z0-9_]{8,32}$/;
+            let pattern = /^[a-zA-Z0-9_]{6,32}$/;
             if (pattern.test(userinput.value)) {
                 userinput.classList.remove('is-invalid');
                 msgalert.hidden = true;
             } else {
                 userinput.classList.add('is-invalid');
+                msgalert.textContent = "用户名: 请输入6到32位的大小写字母、数字和下划线的组合";
+                msgalert.removeAttribute('hidden');
+            }
+        }
+
+        function onChangePassword() {
+            let userpassword = document.getElementById('password');
+            let msgalert = document.getElementById('msgalert');
+            let pattern = /^[a-zA-Z0-9`~!@#$%^&*()-_=+\\|\[\]{}:;'"?/.>,<]{8,256}$/;
+            if (pattern.test(userpassword.value)) {
+                userpassword.classList.remove('is-invalid');
+                msgalert.hidden = true;
+            } else {
+                userpassword.classList.add('is-invalid');
+                msgalert.textContent = "密码: 请输入8到256位的大、小写字母、数字和特殊字符的至少两种组合";
+                msgalert.removeAttribute('hidden');
+            }
+        }
+
+        function onChangeRepassowrd() {
+            let userpassword = document.getElementById('password');
+            let repassword = document.getElementById('repassword');
+            let msgalert = document.getElementById('msgalert');
+            if (userpassword.value === repassword.value) {
+                repassword.classList.remove('is-invalid');
+                msgalert.hidden = true;
+            } else {
+                repassword.classList.add('is-invalid');
+                msgalert.textContent = "两次密码不一致";
                 msgalert.removeAttribute('hidden');
             }
         }
