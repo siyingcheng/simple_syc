@@ -7,8 +7,8 @@
 # @Project  :   simples
 import os
 
+import click
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 
 from simples.extensions import db
 from simples.settings import config, STATIC_FOLDER, TEMPLATE_FOLDER
@@ -50,7 +50,13 @@ def register_commands(app):
     :param app:
     :return:
     """
-    pass
+    @app.cli.command()
+    def init_db():
+        """Initialize the database."""
+        click.echo('Initializing the database...')
+        db.create_all()
+        db.session.commit()
+        click.echo('Completed.')
 
 
 def register_errors(app):
@@ -110,7 +116,5 @@ def create_app(config_name):
     app.template_folder = TEMPLATE_FOLDER
     print('--------------')
     print(app.url_map)
-    print(app.static_folder)
-    print(app.template_folder)
     print('--------------')
     return app

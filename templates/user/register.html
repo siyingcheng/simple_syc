@@ -4,9 +4,14 @@
     <div class="container col-sm-4 mt-5">
         <h2 class="col-sm-4 mt-5 mb-5 m-auto">用户注册</h2>
         <div class="alert alert-warning alert-dismissible fade show" role="alert" id="msgalert" hidden>
-            You should check in on some of those fields below.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+        {% for msg in get_flashed_messages() %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
         <form method="post">
             {{ form.csrf_token }}
             <div class="form-floating mb-3">
@@ -38,7 +43,7 @@
             <button type="submit" class="btn btn-primary">创建用户</button>
             <div class="float-end">
                 <span>已有账户？ </span>
-                <a class="btn btn-warning" href="{{ url_for('user.login') }}">登录</a>
+                <a class="btn btn-warning" href="{{ url_for('user.login') }}">登 录</a>
             </div>
         </form>
     </div>

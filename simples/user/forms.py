@@ -16,6 +16,12 @@ from wtforms.validators import DataRequired, Email, Length, ValidationError
 from simples.settings import INVITE_CODE
 
 
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=32)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=256)])
+    submit = SubmitField('Submit')
+
+
 class UserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=32)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=256)])

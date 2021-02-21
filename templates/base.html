@@ -32,7 +32,12 @@
                         About Me
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Login</a>
+                        <li>
+                            {% if g.get('username') %}
+                                <a class="dropdown-item" href="{{ url_for('user.logout') }}">Logout</a>
+                            {% else %}
+                                <a class="dropdown-item" href="{{ url_for('user.login') }}">Login</a>
+                            {% endif %}
                         <li>
                             <hr class="dropdown-divider">
                         </li>
