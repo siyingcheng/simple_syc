@@ -33,7 +33,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li>
-                            {% if g.get('username') %}
+                            {% if session.get('username') %}
                                 <a class="dropdown-item" href="{{ url_for('user.logout') }}">Logout</a>
                             {% else %}
                                 <a class="dropdown-item" href="{{ url_for('user.login') }}">Login</a>

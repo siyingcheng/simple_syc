@@ -6,7 +6,7 @@
 # @DateTime :   2021/2/14 21:21
 # @Project  :   simples
 
-from flask import Blueprint, render_template, url_for, redirect, flash, g
+from flask import Blueprint, render_template, url_for, redirect, flash, g, session
 
 from simples import db
 from simples.user.forms import UserForm, LoginForm
@@ -22,14 +22,14 @@ def index():
 
 @user_bp.route('/logout')
 def logout():
-    g.pop('username')
+    session.pop('username')
     flash('用户已登出!')
-    redirect(url_for('user.index'))
+    return redirect(url_for('user.index'))
 
 
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if g.get('username', None):
+    if session.get('username'):
         return redirect(url_for('user.index'))
     form = LoginForm()
     if form.validate_on_submit():
@@ -38,7 +38,7 @@ def login():
         user = Users.query.filter_by(username=username).first()
         if user and user.check_password(password):
             flash('欢饮 {}!'.format(user.nickname), category='info')
-            g.username = username
+            session['username'] = username
             return redirect(url_for('user.index'))
         flash('用户名密码错误', category='error')
     return render_template('user/login.html', form=form, title='登录')
